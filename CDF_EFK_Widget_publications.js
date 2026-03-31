@@ -46,7 +46,7 @@ const CFG = isDE
       emptyEntity: "Nicht angegeben",
       acceptLang: "de-CH,de;q=0.9",
       months: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
-      formatDate: (d, m, y, months) => `${d}. ${months[m]} ${y}`,
+      formatDate: (d, m, y, months) => `${d}. ${months[m]}`,
       cacheKey: "efk_publications_cache_de",
       lastUpdateKey: "efk_last_update_de",
       footerLocale: "de-CH",
@@ -62,7 +62,7 @@ const CFG = isDE
       emptyEntity: "Non spécifié",
       acceptLang: "fr-CH,fr;q=0.9",
       months: ["jan", "fév", "mar", "avr", "mai", "juin", "juil", "août", "sep", "oct", "nov", "déc"],
-      formatDate: (d, m, y, months) => `${d} ${months[m]} ${y}`,
+      formatDate: (d, m, y, months) => `${d} ${months[m]}`,
       cacheKey: "cdf_publications_cache_fr",
       lastUpdateKey: "cdf_last_update_fr",
       footerLocale: "fr-CH",
@@ -84,6 +84,23 @@ const ENTITY_MAP = {
   "Eidgenössisches Finanzdepartement": "EFD",
   "Eidgenössisches Departement für Wirtschaft, Bildung und Forschung": "WBF",
   "Eidgenössisches Departement für Umwelt, Verkehr, Energie und Kommunikation": "UVEK",
+  "Bundesamt für Energie": "BFE",
+  "Eidgenössisches Institut für Geistiges Eigentum": "IGE",
+  "Bundesamt für Gesundheit": "BAG",
+  "Bundesamt für Strassen": "ASTRA",
+  "Bundesamt für Verkehr": "BAV",
+  "Bundesamt für Sozialversicherungen": "BSV",
+  "Bundesamt für Umwelt": "BAFU",
+  "Bundesamt für Landwirtschaft": "BLW",
+  "Bundesamt für Kommunikation": "BAKOM",
+  "Bundesamt für Justiz": "BJ",
+  "Bundesamt für Polizei": "fedpol",
+  "Bundesamt für Zoll und Grenzsicherheit": "BAZG",
+  "Eidgenössische Steuerverwaltung": "ESTV",
+  "Eidgenössische Zollverwaltung": "EZV",
+  "Schweizerische Bundesbahnen": "SBB",
+  "Eidgenössisches Nuklearsicherheitsinspektorat": "ENSI",
+  "Schweizerischer Nationalfonds": "SNF",
 
   // FR
   "Secrétariat d'Etat à l'économie": "SECO",
@@ -98,6 +115,34 @@ const ENTITY_MAP = {
   "Département fédéral des finances": "DFF",
   "Département fédéral de l'économie, de la formation et de la recherche": "DEFR",
   "Département fédéral de l'environnement, des transports, de l'énergie et de la communication": "DETEC",
+  "Office fédéral de l'énergie": "OFEN",
+  "Institut Fédéral de la Propriété Intellectuelle": "IPI",
+  "Institut fédéral de la propriété intellectuelle": "IPI",
+  "Office fédéral de la santé publique": "OFSP",
+  "Office fédéral des routes": "OFROU",
+  "Office fédéral des transports": "OFT",
+  "Office fédéral des assurances sociales": "OFAS",
+  "Office fédéral de l'environnement": "OFEV",
+  "Office fédéral de l'agriculture": "OFAG",
+  "Office fédéral de la communication": "OFCOM",
+  "Office fédéral de la justice": "OFJ",
+  "Office fédéral de la police": "fedpol",
+  "Office fédéral de la douane et de la sécurité des frontières": "OFDF",
+  "Administration fédérale des contributions": "AFC",
+  "Chemins de fer fédéraux suisses": "CFF",
+  "Inspection fédérale de la sécurité nucléaire": "IFSN",
+  "Fonds national suisse": "FNS",
+  "Office fédéral de la cybersécurité": "OFCS",
+  "Office fédéral de l'armement": "armasuisse",
+  "Office fédéral du sport": "OFSPO",
+  "Office fédéral de la culture": "OFC",
+  "Office fédéral du personnel": "OFPER",
+  "Office fédéral des constructions et de la logistique": "OFCL",
+  "Office fédéral de l'informatique et de la télécommunication": "OFIT",
+  "Office fédéral de la statistique": "OFS",
+  "Office fédéral du développement territorial": "ARE",
+  "Office fédéral de l'aviation civile": "OFAC",
+  "Office fédéral de topographie": "swisstopo",
 };
 
 class PublicationsWidget {
@@ -344,6 +389,22 @@ class PublicationsWidget {
     return ENTITY_MAP[clean] || clean;
   }
 
+  addFooter(widget) {
+    const lastUpdate = this.fm.fileExists(this.lastUpdatePath)
+      ? new Date(this.fm.readString(this.lastUpdatePath))
+      : new Date();
+
+    const dd = String(lastUpdate.getDate()).padStart(2, "0");
+    const mm = String(lastUpdate.getMonth() + 1).padStart(2, "0");
+    const footerDate = `${dd}.${mm}`;
+
+    const footer = widget.addText(`${this.cfg.footerLabel}: ${footerDate}`);
+    footer.font = Font.systemFont(7);
+    footer.textColor = TEXT_SECONDARY;
+    footer.centerAlignText();
+    footer.minimumScaleFactor = 0.8;
+  }
+
   async createWidget() {
     const widget = new ListWidget();
     widget.backgroundColor = LIGHT_GRAY;
@@ -378,18 +439,7 @@ class PublicationsWidget {
 
       widget.addSpacer();
 
-      const lastUpdate = this.fm.fileExists(this.lastUpdatePath)
-        ? new Date(this.fm.readString(this.lastUpdatePath))
-        : new Date();
-
-      const footer = widget.addText(
-        `${this.cfg.footerLabel}: ${this.formatDate(lastUpdate.toLocaleDateString(this.cfg.footerLocale))}`
-      );
-      footer.font = Font.systemFont(7);
-      footer.textColor = TEXT_SECONDARY;
-      footer.centerAlignText();
-      footer.minimumScaleFactor = 0.8;
-
+      this.addFooter(widget);
       return widget;
     }
 
@@ -399,57 +449,62 @@ class PublicationsWidget {
       const dateGroup = grouped[0];
 
       const dateText = widget.addText(this.formatOrTodayLabel(dateGroup.date));
-      dateText.font = Font.boldSystemFont(11);
+      dateText.font = Font.boldSystemFont(13);
       dateText.textColor = RED;
 
-      widget.addSpacer(4);
+      widget.addSpacer(5);
 
-      for (const pub of dateGroup.publications) {
-        const stack = widget.addStack();
-        stack.layoutVertically();
+      const maxItems = dateGroup.publications.length;
+      for (let i = 0; i < maxItems; i++) {
+        const pub = dateGroup.publications[i];
 
-        // Retirer "cdf-" / "efk-" uniquement à l’affichage
+        const row = widget.addStack();
+        row.layoutVertically();
+
+        // Ligne 1 : numéro d'audit + acronyme entité
+        const metaRow = row.addStack();
+        metaRow.layoutHorizontally();
+        metaRow.centerAlignContent();
+
         const auditClean = pub.auditNumber.replace(new RegExp("^" + this.cfg.idPrefix, "i"), "");
+        const entityAcronym = this.normalizeEntity(pub.entity);
 
-        const auditText = stack.addText(auditClean);
-        auditText.font = Font.mediumSystemFont(9);
-        auditText.textColor = TEXT_SECONDARY;
+        const auditText = metaRow.addText(auditClean);
+        auditText.font = Font.boldMonospacedSystemFont(9);
+        auditText.textColor = RED;
 
-        stack.addSpacer(1);
+        const dotSep = metaRow.addText("  ·  ");
+        dotSep.font = Font.mediumSystemFont(9);
+        dotSep.textColor = TEXT_SECONDARY;
 
-        const titleText = stack.addText(pub.title);
+        const entityText = metaRow.addText(entityAcronym);
+        entityText.font = Font.mediumSystemFont(9);
+        entityText.textColor = TEXT_SECONDARY;
+        entityText.lineLimit = 1;
+
+        row.addSpacer(2);
+
+        // Ligne 2 : titre
+        const titleText = row.addText(pub.title);
         titleText.font = Font.semiboldSystemFont(10);
         titleText.textColor = TEXT_PRIMARY;
         titleText.lineLimit = 2;
         titleText.minimumScaleFactor = 0.85;
 
-        stack.addSpacer(1);
-
-        // Acronyme si mapping connu, sinon texte original
-        const entityText = stack.addText(this.normalizeEntity(pub.entity));
-        entityText.font = Font.systemFont(10);
-        entityText.textColor = TEXT_SECONDARY;
-        entityText.lineLimit = 1;
-        entityText.minimumScaleFactor = 0.7;
-
-        widget.addSpacer(4);
+        // Séparateur léger entre les publications (sauf la dernière)
+        if (i < maxItems - 1) {
+          widget.addSpacer(4);
+          const sep = widget.addStack();
+          sep.size = new Size(0, 0.5);
+          sep.backgroundColor = new Color("#DDDDDD");
+          widget.addSpacer(4);
+        }
       }
     }
 
-    widget.addSpacer(2);
+    widget.addSpacer();
 
-    const lastUpdate = this.fm.fileExists(this.lastUpdatePath)
-      ? new Date(this.fm.readString(this.lastUpdatePath))
-      : new Date();
-
-    const footer = widget.addText(
-      `${this.cfg.footerLabel}: ${this.formatDate(lastUpdate.toLocaleDateString(this.cfg.footerLocale))}`
-    );
-    footer.font = Font.systemFont(7);
-    footer.textColor = TEXT_SECONDARY;
-    footer.centerAlignText();
-    footer.minimumScaleFactor = 0.8;
-
+    this.addFooter(widget);
     return widget;
   }
 }
