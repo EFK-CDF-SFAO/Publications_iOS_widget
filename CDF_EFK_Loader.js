@@ -7,7 +7,7 @@
  * Placez ce fichier dans Scriptable, il téléchargera toujours la dernière version
  */
 
-const GITHUB_RAW_URL = "https://raw.githubusercontent.com/ArnaudBon20/EFK_publications/main/CDF_EFK_Widget_publications.js";
+const GITHUB_RAW_URL = "https://raw.githubusercontent.com/EFK-CDF-SFAO/Publications_iOS_widget/main/CDF_EFK_Widget_publications.js?v=" + Date.now();
 
 async function loadAndRun() {
   try {
