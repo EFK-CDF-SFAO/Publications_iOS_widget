@@ -5,7 +5,8 @@ An **iOS Scriptable widget** that displays the **upcoming publications of the Sw
 The widget is **bilingual (FR / DE)**, updates automatically, and compensates for the delayed updates on the official website.
 
 ---
-<img width="590" height="294" alt="Widget iOS" src="https://github.com/user-attachments/assets/b0f58479-e092-436e-b222-c3963e4cbaeb" />
+<img width="590" height="296" alt="Publications_widget" src="https://github.com/user-attachments/assets/ccb9f772-2553-41cc-b4f0-395d164cbdd7" />
+
 
 ---
 ## ✨ Features
