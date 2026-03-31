@@ -19,7 +19,9 @@ The widget is **bilingual (FR / DE)**, updates automatically, and compensates fo
 - 🗂️ **Local cache** to reduce unnecessary network requests
 - 🎨 Clean and minimal design, aligned with institutional colors
 - 🔗 Tap on the widget to open the official CDF / EFK webpage
-- 📅 Display of the message “Tonight, 11 p.m.” when posts are on the same day **New**
+- 📅 Display of the message “Tonight, 11 p.m.” when posts are on the same day
+- 🏷️ Audit number and entity acronym displayed together on a single line (e.g. `25221  ·  IPI`)
+- 📆 Dates shown with full month name, without year (e.g. `1er avril`, `1. April`)
 
 ---
 
@@ -61,10 +63,11 @@ By default, the widget uses the iPhone system language.
 
 For each publication, the widget shows:
 
-- **Publication date**
-- **Audit number**
-- **Audit title**
-- **Audited entity (acronym)**
+- **Publication date** (full month, no year – e.g. `1er avril` / `1. April`)
+- **Audit number + entity acronym** on the same line (e.g. `25221  ·  OFEN`)
+- **Audit title** (up to 2 lines)
+
+Publications are separated by light dividers for readability. Over 50 federal entities are mapped to their official acronyms (FR & DE).
 
 ---
 
